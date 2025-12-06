@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" th:replace="~{layout :: layout(~{::content})}">
+<head>
+    <title>Gestión de Clientes</title>
+</head>
+<body>
+    <div th:fragment="content">
+        <div class="card">
+            <h2>Gestión de Clientes</h2>
+            
+            <div class="search-bar">
+                <form th:action="@{/clientes}" method="get" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 10px; margin-bottom: 1rem;">
+                    <input type="text" name="busqueda" th:value="${busqueda}" placeholder="Buscar por nombre, email, documento..." class="form-control">
+                    <select name="tipoCliente" class="form-control">
+                        <option value="">Todos los tipos</option>
+                        <option value="PERSONA" th:selected="${tipoCliente == 'PERSONA'}">Persona</option>
+                        <option value="EMPRESA" th:selected="${tipoCliente == 'EMPRESA'}">Empresa</option>
+                    </select>
+                    <input type="text" name="ciudad" th:value="${ciudad}" placeholder="Ciudad" class="form-control">
+                    <input type="email" name="email" th:value="${email}" placeholder="Email" class="form-control">
+                    <input type="text" name="telefono" th:value="${telefono}" placeholder="Teléfono" class="form-control">
+                    <input type="text" name="documento" th:value="${documento}" placeholder="Documento" class="form-control">
+                    <button type="submit" class="btn btn-primary">Buscar</button>
+                    <a th:href="@{/clientes}" class="btn btn-secondary">Limpiar</a>
+                </form>
+            </div>
+            
+            <div style="margin-bottom: 1rem;">
+                <a th:href="@{/clientes/nuevo}" class="btn btn-success">Nuevo Cliente</a>
+            </div>
+            
+            <div class="table-container">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Nombre</th>
+                            <th>Tipo</th>
+                            <th>Email</th>
+                            <th>Teléfono</th>
+                            <th>Ciudad</th>
+                            <th>Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr th:each="cliente : ${clientes}">
+                            <td th:text="${cliente.id}"></td>
+                            <td th:text="${cliente.nombre}"></td>
+                            <td th:text="${cliente.tipoCliente}"></td>
+                            <td th:text="${cliente.email}"></td>
+                            <td th:text="${cliente.telefono}"></td>
+                            <td th:text="${cliente.ciudad}"></td>
+                            <td>
+                                <a th:href="@{/clientes/detalle/{id}(id=${cliente.id})}" class="btn btn-info">Ver</a>
+                                <a th:href="@{/clientes/editar/{id}(id=${cliente.id})}" class="btn btn-warning">Editar</a>
+                                <a th:href="@{/clientes/eliminar/{id}(id=${cliente.id})}" class="btn btn-danger" 
+                                   onclick="return confirm('¿Está seguro de eliminar este cliente?')">Eliminar</a>
+                            </td>
+                        </tr>
+                        <tr th:if="${#lists.isEmpty(clientes)}">
+                            <td colspan="7" style="text-align: center;">No hay clientes registrados</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

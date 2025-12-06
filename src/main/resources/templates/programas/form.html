@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" th:replace="~{layout :: layout(~{::content})}">
+<head>
+    <title th:text="${programa.id != null ? 'Editar Programa' : 'Nuevo Programa'}">Programa</title>
+</head>
+<body>
+    <div th:fragment="content">
+        <div class="card">
+            <h2 th:text="${programa.id != null ? 'Editar Programa' : 'Nuevo Programa'}">Programa</h2>
+            
+            <form th:action="@{/programas/guardar}" th:object="${programa}" method="post">
+                <input type="hidden" th:field="*{id}">
+                
+                <div class="form-group">
+                    <label for="nombre">Nombre:</label>
+                    <input type="text" id="nombre" th:field="*{nombre}" class="form-control" required>
+                    <span th:if="${#fields.hasErrors('nombre')}" th:errors="*{nombre}" class="error"></span>
+                </div>
+                
+                <div class="form-group">
+                    <label for="contenido">Contenido:</label>
+                    <textarea id="contenido" th:field="*{contenido}" class="form-control" rows="4" required></textarea>
+                    <span th:if="${#fields.hasErrors('contenido')}" th:errors="*{contenido}" class="error"></span>
+                </div>
+                
+                <div class="form-group">
+                    <label for="requisitos">Requisitos:</label>
+                    <textarea id="requisitos" th:field="*{requisitos}" class="form-control" rows="2"></textarea>
+                </div>
+                
+                <div class="form-group">
+                    <label for="instructor">Instructor:</label>
+                    <input type="text" id="instructor" th:field="*{instructor}" class="form-control">
+                </div>
+                
+                <div class="form-group">
+                    <label for="costo">Costo:</label>
+                    <input type="number" id="costo" th:field="*{costo}" class="form-control" step="0.01" min="0">
+                    <span th:if="${#fields.hasErrors('costo')}" th:errors="*{costo}" class="error"></span>
+                </div>
+                
+                <div class="form-group">
+                    <label for="duracionDias">Duración (días):</label>
+                    <input type="number" id="duracionDias" th:field="*{duracionDias}" class="form-control" min="1">
+                    <span th:if="${#fields.hasErrors('duracionDias')}" th:errors="*{duracionDias}" class="error"></span>
+                </div>
+                
+                <div class="form-group">
+                    <label for="cupo">Cupo:</label>
+                    <input type="number" id="cupo" th:field="*{cupo}" class="form-control" min="1">
+                    <span th:if="${#fields.hasErrors('cupo')}" th:errors="*{cupo}" class="error"></span>
+                </div>
+                
+                <div class="form-group">
+                    <label for="fechaInicio">Fecha Inicio:</label>
+                    <input type="date" id="fechaInicio" th:field="*{fechaInicio}" class="form-control">
+                </div>
+                
+                <div class="form-group">
+                    <label for="fechaFin">Fecha Fin:</label>
+                    <input type="date" id="fechaFin" th:field="*{fechaFin}" class="form-control">
+                </div>
+                
+                <div class="form-group">
+                    <label for="temario">Temario:</label>
+                    <textarea id="temario" th:field="*{temario}" class="form-control" rows="4"></textarea>
+                </div>
+                
+                <div class="form-group">
+                    <label>
+                        <input type="checkbox" th:field="*{activo}"> Activo
+                    </label>
+                </div>
+                
+                <button type="submit" class="btn btn-success">Guardar</button>
+                <a th:href="@{/programas}" class="btn btn-secondary">Cancelar</a>
+            </form>
+        </div>
+    </div>
+</body>
+</html>
+

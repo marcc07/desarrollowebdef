@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" th:replace="~{layout :: layout(~{::content})}">
+<head>
+    <title th:text="${servicio.id != null ? 'Editar Servicio' : 'Nuevo Servicio'}">Servicio</title>
+</head>
+<body>
+    <div th:fragment="content">
+        <div class="card">
+            <h2 th:text="${servicio.id != null ? 'Editar Servicio' : 'Nuevo Servicio'}">Servicio</h2>
+            
+            <form th:action="@{/servicios/guardar}" th:object="${servicio}" method="post">
+                <input type="hidden" th:field="*{id}">
+                
+                <div class="form-group">
+                    <label for="nombre">Nombre:</label>
+                    <input type="text" id="nombre" th:field="*{nombre}" class="form-control" required>
+                    <span th:if="${#fields.hasErrors('nombre')}" th:errors="*{nombre}" class="error"></span>
+                </div>
+                
+                <div class="form-group">
+                    <label for="tipo">Tipo:</label>
+                    <select id="tipo" th:field="*{tipo}" class="form-control">
+                        <option value="">Seleccione...</option>
+                        <option value="VIGILANCIA_FIJA">Vigilancia Fija</option>
+                        <option value="PATRULLAJE_MOVIL">Patrullaje Móvil</option>
+                        <option value="ESCOLTA">Escolta</option>
+                        <option value="MONITOREO">Monitoreo</option>
+                        <option value="OTRO">Otro</option>
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label for="descripcion">Descripción:</label>
+                    <textarea id="descripcion" th:field="*{descripcion}" class="form-control" rows="3" required></textarea>
+                    <span th:if="${#fields.hasErrors('descripcion')}" th:errors="*{descripcion}" class="error"></span>
+                </div>
+                
+                <div class="form-group">
+                    <label for="ubicacion">Ubicación:</label>
+                    <input type="text" id="ubicacion" th:field="*{ubicacion}" class="form-control">
+                </div>
+                
+                <div class="form-group">
+                    <label for="precio">Precio:</label>
+                    <input type="number" id="precio" th:field="*{precio}" class="form-control" step="0.01" min="0">
+                    <span th:if="${#fields.hasErrors('precio')}" th:errors="*{precio}" class="error"></span>
+                </div>
+                
+                <div class="form-group">
+                    <label for="duracion">Duración:</label>
+                    <input type="text" id="duracion" th:field="*{duracion}" class="form-control" placeholder="Ej: Por hora, Por día, Mensual">
+                </div>
+                
+                <div class="form-group">
+                    <label for="personalAsignado">Personal Asignado:</label>
+                    <input type="text" id="personalAsignado" th:field="*{personalAsignado}" class="form-control">
+                </div>
+                
+                <div class="form-group">
+                    <label for="horarios">Horarios:</label>
+                    <input type="text" id="horarios" th:field="*{horarios}" class="form-control">
+                </div>
+                
+                <div class="form-group">
+                    <label for="herramientas">Herramientas:</label>
+                    <input type="text" id="herramientas" th:field="*{herramientas}" class="form-control">
+                </div>
+                
+                <div class="form-group">
+                    <label for="condiciones">Condiciones:</label>
+                    <textarea id="condiciones" th:field="*{condiciones}" class="form-control" rows="2"></textarea>
+                </div>
+                
+                <div class="form-group">
+                    <label>
+                        <input type="checkbox" th:field="*{activo}"> Activo
+                    </label>
+                </div>
+                
+                <button type="submit" class="btn btn-success">Guardar</button>
+                <a th:href="@{/servicios}" class="btn btn-secondary">Cancelar</a>
+            </form>
+        </div>
+    </div>
+</body>
+</html>
+

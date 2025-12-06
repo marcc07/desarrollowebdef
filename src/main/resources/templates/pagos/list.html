@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" th:replace="~{layout :: layout(~{::content})}">
+<head>
+    <title>Pagos</title>
+</head>
+<body>
+    <div th:fragment="content">
+        <div class="card">
+            <h2>Gestión de Pagos</h2>
+            
+            <div class="search-bar">
+                <form th:action="@{/pagos}" method="get" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 10px; margin-bottom: 1rem;">
+                    <select name="estado" class="form-control">
+                        <option value="">Todos los estados</option>
+                        <option value="PENDIENTE" th:selected="${estado == 'PENDIENTE'}">Pendiente</option>
+                        <option value="COMPLETADO" th:selected="${estado == 'COMPLETADO'}">Completado</option>
+                        <option value="CANCELADO" th:selected="${estado == 'CANCELADO'}">Cancelado</option>
+                    </select>
+                    <select name="clienteId" class="form-control">
+                        <option value="">Todos los clientes</option>
+                        <option th:each="cliente : ${clientes}" th:value="${cliente.id}" th:text="${cliente.nombre}" th:selected="${clienteId != null && clienteId == cliente.id}"></option>
+                    </select>
+                    <select name="contratacionId" class="form-control">
+                        <option value="">Todas las contrataciones</option>
+                        <option th:each="contratacion : ${contrataciones}" th:value="${contratacion.id}" th:text="${'#' + contratacion.id + ' - ' + contratacion.servicioSeguridad.nombre}" th:selected="${contratacionId != null && contratacionId == contratacion.id}"></option>
+                    </select>
+                    <select name="medioPago" class="form-control">
+                        <option value="">Todos los medios</option>
+                        <option value="EFECTIVO" th:selected="${medioPago == 'EFECTIVO'}">Efectivo</option>
+                        <option value="TRANSFERENCIA" th:selected="${medioPago == 'TRANSFERENCIA'}">Transferencia</option>
+                        <option value="TARJETA" th:selected="${medioPago == 'TARJETA'}">Tarjeta</option>
+                        <option value="CHEQUE" th:selected="${medioPago == 'CHEQUE'}">Cheque</option>
+                    </select>
+                    <input type="date" name="fechaInicio" th:value="${fechaInicio}" placeholder="Fecha inicio" class="form-control">
+                    <input type="date" name="fechaFin" th:value="${fechaFin}" placeholder="Fecha fin" class="form-control">
+                    <input type="number" name="montoMin" th:value="${montoMin}" placeholder="Monto mínimo" class="form-control" step="0.01" min="0">
+                    <input type="number" name="montoMax" th:value="${montoMax}" placeholder="Monto máximo" class="form-control" step="0.01" min="0">
+                    <button type="submit" class="btn btn-primary">Buscar</button>
+                    <a th:href="@{/pagos}" class="btn btn-secondary">Limpiar</a>
+                </form>
+            </div>
+            
+            <div style="margin-bottom: 1rem; display: flex; gap: 1rem; flex-wrap: wrap;">
+                <a th:href="@{/pagos/nuevo}" class="btn btn-success">Nuevo Pago</a>
+                <a th:href="@{/pagos/reconciliar-todos}" class="btn btn-info">Reconciliación de Pagos</a>
+            </div>
+            
+            <div class="table-container">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Cliente</th>
+                            <th>Monto</th>
+                            <th>Fecha Pago</th>
+                            <th>Medio de Pago</th>
+                            <th>Estado</th>
+                            <th>Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr th:each="pago : ${pagos}">
+                            <td th:text="${pago.id}"></td>
+                            <td th:text="${pago.cliente.nombre}"></td>
+                            <td th:text="${pago.monto != null ? #numbers.formatDecimal(pago.monto, 1, 2) : 'N/A'}"></td>
+                            <td th:text="${pago.fechaPago}"></td>
+                            <td th:text="${pago.medioPago}"></td>
+                            <td>
+                                <span th:if="${pago.estado == 'COMPLETADO'}" class="badge badge-success" th:text="${pago.estado}"></span>
+                                <span th:if="${pago.estado == 'PENDIENTE'}" class="badge badge-warning" th:text="${pago.estado}"></span>
+                                <span th:if="${pago.estado == 'CANCELADO'}" class="badge badge-danger" th:text="${pago.estado}"></span>
+                            </td>
+                            <td>
+                                <a th:href="@{/pagos/detalle/{id}(id=${pago.id})}" class="btn btn-info">Ver</a>
+                                <a th:href="@{/pagos/editar/{id}(id=${pago.id})}" class="btn btn-warning">Editar</a>
+                                <a th:href="@{/pagos/eliminar/{id}(id=${pago.id})}" class="btn btn-danger" 
+                                   onclick="return confirm('¿Está seguro de eliminar este pago?')">Eliminar</a>
+                            </td>
+                        </tr>
+                        <tr th:if="${#lists.isEmpty(pagos)}">
+                            <td colspan="7" style="text-align: center;">No hay pagos registrados</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
+

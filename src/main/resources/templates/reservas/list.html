@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" th:replace="~{layout :: layout(~{::content})}">
+<head>
+    <title>Reservas</title>
+</head>
+<body>
+    <div th:fragment="content">
+        <div class="card">
+            <h2>Gestión de Reservas</h2>
+            
+            <div class="search-bar">
+                <form th:action="@{/reservas}" method="get" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 10px; margin-bottom: 1rem;">
+                    <select name="estado" class="form-control">
+                        <option value="">Todos los estados</option>
+                        <option value="PENDIENTE" th:selected="${estado == 'PENDIENTE'}">Pendiente</option>
+                        <option value="CONFIRMADA" th:selected="${estado == 'CONFIRMADA'}">Confirmada</option>
+                        <option value="ACTIVA" th:selected="${estado == 'ACTIVA'}">Activa</option>
+                        <option value="CANCELADA" th:selected="${estado == 'CANCELADA'}">Cancelada</option>
+                        <option value="COMPLETADA" th:selected="${estado == 'COMPLETADA'}">Completada</option>
+                    </select>
+                    <select name="clienteId" class="form-control">
+                        <option value="">Todos los clientes</option>
+                        <option th:each="cliente : ${clientes}" th:value="${cliente.id}" th:text="${cliente.nombre}" th:selected="${clienteId != null && clienteId == cliente.id}"></option>
+                    </select>
+                    <select name="programaId" class="form-control">
+                        <option value="">Todos los programas</option>
+                        <option th:each="programa : ${programas}" th:value="${programa.id}" th:text="${programa.nombre}" th:selected="${programaId != null && programaId == programa.id}"></option>
+                    </select>
+                    <input type="date" name="fechaInicio" th:value="${fechaInicio}" placeholder="Fecha inicio" class="form-control">
+                    <input type="date" name="fechaFin" th:value="${fechaFin}" placeholder="Fecha fin" class="form-control">
+                    <button type="submit" class="btn btn-primary">Buscar</button>
+                    <a th:href="@{/reservas}" class="btn btn-secondary">Limpiar</a>
+                </form>
+            </div>
+            
+            <div style="margin-bottom: 1rem;">
+                <a th:href="@{/reservas/nuevo}" class="btn btn-success">Nueva Reserva</a>
+            </div>
+            
+            <div class="table-container">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Cliente</th>
+                            <th>Programa</th>
+                            <th>Fecha Reserva</th>
+                            <th>Estado</th>
+                            <th>Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr th:each="reserva : ${reservas}">
+                            <td th:text="${reserva.id}"></td>
+                            <td th:text="${reserva.cliente.nombre}"></td>
+                            <td th:text="${reserva.programaEntrenamiento.nombre}"></td>
+                            <td th:text="${reserva.fechaReserva}"></td>
+                            <td>
+                                <span th:if="${reserva.estado == 'CONFIRMADA'}" class="badge badge-success" th:text="${reserva.estado}"></span>
+                                <span th:if="${reserva.estado == 'PENDIENTE'}" class="badge badge-warning" th:text="${reserva.estado}"></span>
+                                <span th:if="${reserva.estado == 'CANCELADA'}" class="badge badge-danger" th:text="${reserva.estado}"></span>
+                                <span th:if="${reserva.estado == 'COMPLETADA'}" class="badge badge-info" th:text="${reserva.estado}"></span>
+                            </td>
+                            <td>
+                                <a th:href="@{/reservas/detalle/{id}(id=${reserva.id})}" class="btn btn-info">Ver</a>
+                                <a th:href="@{/reservas/editar/{id}(id=${reserva.id})}" class="btn btn-warning">Editar</a>
+                                <a th:if="${reserva.estado != 'CANCELADA'}" th:href="@{/reservas/cancelar/{id}(id=${reserva.id})}" class="btn btn-danger" 
+                                   onclick="return confirm('¿Está seguro de cancelar esta reserva?')">Cancelar</a>
+                                <a th:href="@{/reservas/eliminar/{id}(id=${reserva.id})}" class="btn btn-danger" 
+                                   onclick="return confirm('¿Está seguro de eliminar esta reserva?')">Eliminar</a>
+                            </td>
+                        </tr>
+                        <tr th:if="${#lists.isEmpty(reservas)}">
+                            <td colspan="6" style="text-align: center;">No hay reservas registradas</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
+

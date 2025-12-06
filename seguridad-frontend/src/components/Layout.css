@@ -1,0 +1,48 @@
+.layout-container {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+.user-icon {
+    font-size: 1.5rem;
+    color: rgba(255, 255, 255, 0.9);
+}
+
+.user-info .btn-sm {
+    padding: 0.35rem 0.6rem;
+    font-size: 0.85rem;
+    margin-left: 0.5rem;
+}
+
+.user-info button[title] {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.theme-btn-header {
+    background: rgba(255, 255, 255, 0.2) !important;
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    color: white;
+    padding: 0.35rem 0.5rem !important;
+    font-size: 0.9rem;
+    border-radius: 6px;
+}
+
+.theme-btn-header:hover {
+    background: rgba(255, 255, 255, 0.3) !important;
+}
+
+.theme-btn-header i {
+    margin: 0;
+}
+
+
+
+
+
+
+
+
+

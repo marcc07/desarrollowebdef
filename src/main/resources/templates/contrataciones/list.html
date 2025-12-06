@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" th:replace="~{layout :: layout(~{::content})}">
+<head>
+    <title>Contrataciones</title>
+</head>
+<body>
+    <div th:fragment="content">
+        <div class="card">
+            <h2>Gestión de Contrataciones</h2>
+            
+            <div class="search-bar">
+                <form th:action="@{/contrataciones}" method="get" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 10px; margin-bottom: 1rem;">
+                    <select name="estado" class="form-control">
+                        <option value="">Todos los estados</option>
+                        <option value="PENDIENTE" th:selected="${estado == 'PENDIENTE'}">Pendiente</option>
+                        <option value="ACTIVA" th:selected="${estado == 'ACTIVA'}">Activa</option>
+                        <option value="FINALIZADA" th:selected="${estado == 'FINALIZADA'}">Finalizada</option>
+                        <option value="CANCELADA" th:selected="${estado == 'CANCELADA'}">Cancelada</option>
+                    </select>
+                    <select name="clienteId" class="form-control">
+                        <option value="">Todos los clientes</option>
+                        <option th:each="cliente : ${clientes}" th:value="${cliente.id}" th:text="${cliente.nombre}" th:selected="${clienteId != null && clienteId == cliente.id}"></option>
+                    </select>
+                    <select name="servicioId" class="form-control">
+                        <option value="">Todos los servicios</option>
+                        <option th:each="servicio : ${servicios}" th:value="${servicio.id}" th:text="${servicio.nombre}" th:selected="${servicioId != null && servicioId == servicio.id}"></option>
+                    </select>
+                    <input type="date" name="fechaInicio" th:value="${fechaInicio}" placeholder="Fecha inicio" class="form-control">
+                    <input type="date" name="fechaFin" th:value="${fechaFin}" placeholder="Fecha fin" class="form-control">
+                    <button type="submit" class="btn btn-primary">Buscar</button>
+                    <a th:href="@{/contrataciones}" class="btn btn-secondary">Limpiar</a>
+                </form>
+            </div>
+            
+            <div style="margin-bottom: 1rem;">
+                <a th:href="@{/contrataciones/nuevo}" class="btn btn-success">Nueva Contratación</a>
+            </div>
+            
+            <div class="table-container">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Cliente</th>
+                            <th>Servicio</th>
+                            <th>Fecha Inicio</th>
+                            <th>Fecha Fin</th>
+                            <th>Estado</th>
+                            <th>Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr th:each="contratacion : ${contrataciones}">
+                            <td th:text="${contratacion.id}"></td>
+                            <td th:text="${contratacion.cliente.nombre}"></td>
+                            <td th:text="${contratacion.servicioSeguridad.nombre}"></td>
+                            <td th:text="${contratacion.fechaInicio}"></td>
+                            <td th:text="${contratacion.fechaFin}"></td>
+                            <td>
+                                <span th:if="${contratacion.estado == 'ACTIVA'}" class="badge badge-success" th:text="${contratacion.estado}"></span>
+                                <span th:if="${contratacion.estado == 'PENDIENTE'}" class="badge badge-warning" th:text="${contratacion.estado}"></span>
+                                <span th:if="${contratacion.estado == 'FINALIZADA'}" class="badge badge-info" th:text="${contratacion.estado}"></span>
+                                <span th:if="${contratacion.estado == 'CANCELADA'}" class="badge badge-danger" th:text="${contratacion.estado}"></span>
+                            </td>
+                            <td>
+                                <a th:href="@{/contrataciones/detalle/{id}(id=${contratacion.id})}" class="btn btn-info">Ver</a>
+                                <a th:href="@{/contrataciones/editar/{id}(id=${contratacion.id})}" class="btn btn-warning">Editar</a>
+                                <a th:if="${contratacion.estado != 'CANCELADA'}" th:href="@{/contrataciones/cancelar/{id}(id=${contratacion.id})}" class="btn btn-danger" 
+                                   onclick="return confirm('¿Está seguro de cancelar esta contratación?')">Cancelar</a>
+                                <a th:href="@{/contrataciones/eliminar/{id}(id=${contratacion.id})}" class="btn btn-danger" 
+                                   onclick="return confirm('¿Está seguro de eliminar esta contratación?')">Eliminar</a>
+                            </td>
+                        </tr>
+                        <tr th:if="${#lists.isEmpty(contrataciones)}">
+                            <td colspan="7" style="text-align: center;">No hay contrataciones registradas</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
+

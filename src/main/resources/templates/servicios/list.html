@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" th:replace="~{layout :: layout(~{::content})}">
+<head>
+    <title>Servicios de Seguridad</title>
+</head>
+<body>
+    <div th:fragment="content">
+        <div class="card">
+            <h2>Gestión de Servicios de Seguridad</h2>
+            
+            <div class="search-bar">
+                <form th:action="@{/servicios}" method="get" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 10px; margin-bottom: 1rem;">
+                    <input type="text" name="busqueda" th:value="${busqueda}" placeholder="Buscar por nombre, tipo, ubicación..." class="form-control">
+                    <select name="tipo" class="form-control">
+                        <option value="">Todos los tipos</option>
+                        <option value="VIGILANCIA_FIJA" th:selected="${tipo == 'VIGILANCIA_FIJA'}">Vigilancia Fija</option>
+                        <option value="PATRULLAJE_MOVIL" th:selected="${tipo == 'PATRULLAJE_MOVIL'}">Patrullaje Móvil</option>
+                        <option value="ESCOLTA" th:selected="${tipo == 'ESCOLTA'}">Escolta</option>
+                        <option value="MONITOREO" th:selected="${tipo == 'MONITOREO'}">Monitoreo</option>
+                        <option value="OTRO" th:selected="${tipo == 'OTRO'}">Otro</option>
+                    </select>
+                    <input type="text" name="ubicacion" th:value="${ubicacion}" placeholder="Ubicación" class="form-control">
+                    <input type="text" name="duracion" th:value="${duracion}" placeholder="Duración" class="form-control">
+                    <input type="number" name="precioMin" th:value="${precioMin}" placeholder="Precio mínimo" class="form-control" step="0.01" min="0">
+                    <input type="number" name="precioMax" th:value="${precioMax}" placeholder="Precio máximo" class="form-control" step="0.01" min="0">
+                    <button type="submit" class="btn btn-primary">Buscar</button>
+                    <a th:href="@{/servicios}" class="btn btn-secondary">Limpiar</a>
+                </form>
+            </div>
+            
+            <div style="margin-bottom: 1rem;">
+                <a th:href="@{/servicios/nuevo}" class="btn btn-success">Nuevo Servicio</a>
+            </div>
+            
+            <div class="table-container">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Nombre</th>
+                            <th>Tipo</th>
+                            <th>Ubicación</th>
+                            <th>Precio</th>
+                            <th>Duración</th>
+                            <th>Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr th:each="servicio : ${servicios}">
+                            <td th:text="${servicio.id}"></td>
+                            <td th:text="${servicio.nombre}"></td>
+                            <td th:text="${servicio.tipo}"></td>
+                            <td th:text="${servicio.ubicacion}"></td>
+                            <td th:text="${servicio.precio != null ? #numbers.formatDecimal(servicio.precio, 1, 2) : 'N/A'}"></td>
+                            <td th:text="${servicio.duracion}"></td>
+                            <td>
+                                <a th:href="@{/servicios/detalle/{id}(id=${servicio.id})}" class="btn btn-info">Ver</a>
+                                <a th:href="@{/servicios/editar/{id}(id=${servicio.id})}" class="btn btn-warning">Editar</a>
+                                <a th:href="@{/servicios/eliminar/{id}(id=${servicio.id})}" class="btn btn-danger" 
+                                   onclick="return confirm('¿Está seguro de eliminar este servicio?')">Eliminar</a>
+                            </td>
+                        </tr>
+                        <tr th:if="${#lists.isEmpty(servicios)}">
+                            <td colspan="7" style="text-align: center;">No hay servicios registrados</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
+

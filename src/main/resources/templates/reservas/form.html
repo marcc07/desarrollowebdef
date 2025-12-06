@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" th:replace="~{layout :: layout(~{::content})}">
+<head>
+    <title th:text="${reserva.id != null ? 'Editar Reserva' : 'Nueva Reserva'}">Reserva</title>
+</head>
+<body>
+    <div th:fragment="content">
+        <div class="card">
+            <h2 th:text="${reserva.id != null ? 'Editar Reserva' : 'Nueva Reserva'}">Reserva</h2>
+            
+            <form th:action="@{/reservas/guardar}" th:object="${reserva}" method="post">
+                <input type="hidden" th:field="*{id}">
+                
+                <div class="form-group">
+                    <label for="cliente">Cliente:</label>
+                    <select id="cliente" th:field="*{cliente.id}" class="form-control" required>
+                        <option value="">Seleccione un cliente...</option>
+                        <option th:each="cliente : ${clientes}" th:value="${cliente.id}" th:text="${cliente.nombre}"></option>
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label for="programaEntrenamiento">Programa de Entrenamiento:</label>
+                    <select id="programaEntrenamiento" th:field="*{programaEntrenamiento.id}" class="form-control" required>
+                        <option value="">Seleccione un programa...</option>
+                        <option th:each="programa : ${programas}" th:value="${programa.id}" th:text="${programa.nombre + ' (Cupo: ' + programa.cupoDisponible + ')'}"></option>
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label for="fechaReserva">Fecha Reserva:</label>
+                    <input type="date" id="fechaReserva" th:field="*{fechaReserva}" class="form-control">
+                </div>
+                
+                <div class="form-group">
+                    <label for="estado">Estado:</label>
+                    <select id="estado" th:field="*{estado}" class="form-control" required>
+                        <option value="PENDIENTE">Pendiente</option>
+                        <option value="CONFIRMADA">Confirmada</option>
+                        <option value="ACTIVA">Activa</option>
+                        <option value="CANCELADA">Cancelada</option>
+                        <option value="COMPLETADA">Completada</option>
+                    </select>
+                    <small class="form-text text-muted">
+                        <strong>Nota:</strong> Se enviará un email automático al cliente cuando el estado sea "Confirmada" o "Activa"
+                    </small>
+                </div>
+                
+                <div class="form-group">
+                    <label for="observaciones">Observaciones:</label>
+                    <textarea id="observaciones" th:field="*{observaciones}" class="form-control" rows="3"></textarea>
+                </div>
+                
+                <button type="submit" class="btn btn-success">Guardar</button>
+                <a th:href="@{/reservas}" class="btn btn-secondary">Cancelar</a>
+            </form>
+        </div>
+    </div>
+</body>
+</html>
+

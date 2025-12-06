@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" th:replace="~{layout :: layout(~{::content})}">
+<head>
+    <title>Reconciliación de Pagos</title>
+</head>
+<body>
+    <div th:fragment="content">
+        <div class="card">
+            <h2>Reconciliación de Pagos</h2>
+            
+            <div th:if="${reconciliacion.error != null}" class="alert alert-error" th:text="${reconciliacion.error}"></div>
+            
+            <div th:if="${reconciliacion.error == null}">
+                <table>
+                    <tr>
+                        <th>Contratación ID</th>
+                        <td th:text="${reconciliacion.contratacionId}"></td>
+                    </tr>
+                    <tr>
+                        <th>Cliente</th>
+                        <td th:text="${reconciliacion.clienteNombre}"></td>
+                    </tr>
+                    <tr>
+                        <th>Servicio</th>
+                        <td th:text="${reconciliacion.servicioNombre}"></td>
+                    </tr>
+                    <tr>
+                        <th>Monto del Servicio</th>
+                        <td th:text="${reconciliacion.montoServicio != null ? #numbers.formatDecimal(reconciliacion.montoServicio, 1, 2) : '0.00'}"></td>
+                    </tr>
+                    <tr>
+                        <th>Monto Total Pagado</th>
+                        <td th:text="${reconciliacion.montoTotalPagado != null ? #numbers.formatDecimal(reconciliacion.montoTotalPagado, 1, 2) : '0.00'}"></td>
+                    </tr>
+                    <tr>
+                        <th>Diferencia</th>
+                        <td>
+                            <span th:if="${reconciliacion.diferencia != null and reconciliacion.diferencia.doubleValue() > 0}" 
+                                  class="badge badge-warning" 
+                                  th:text="${'Pendiente: ' + #numbers.formatDecimal(reconciliacion.diferencia, 1, 2)}"></span>
+                            <span th:if="${reconciliacion.diferencia != null and reconciliacion.diferencia.doubleValue() <= 0}" 
+                                  class="badge badge-success">Reconciliado</span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>Número de Pagos</th>
+                        <td th:text="${reconciliacion.numeroPagos}"></td>
+                    </tr>
+                    <tr>
+                        <th>Estado</th>
+                        <td>
+                            <span th:if="${reconciliacion.estaReconciliado}" class="badge badge-success">Reconciliado</span>
+                            <span th:if="${!reconciliacion.estaReconciliado}" class="badge badge-warning">Pendiente</span>
+                        </td>
+                    </tr>
+                </table>
+                
+                <h3 style="margin-top: 2rem;">Pagos Registrados</h3>
+                <div class="table-container">
+                    <table th:if="${reconciliacion.pagos != null and !reconciliacion.pagos.isEmpty()}">
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Monto</th>
+                                <th>Fecha</th>
+                                <th>Medio de Pago</th>
+                                <th>Estado</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr th:each="pago : ${reconciliacion.pagos}">
+                                <td th:text="${pago.id}"></td>
+                                <td th:text="${pago.monto != null ? #numbers.formatDecimal(pago.monto, 1, 2) : 'N/A'}"></td>
+                                <td th:text="${pago.fechaPago}"></td>
+                                <td th:text="${pago.medioPago}"></td>
+                                <td th:text="${pago.estado}"></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <p th:if="${reconciliacion.pagos == null or reconciliacion.pagos.isEmpty()}">No hay pagos registrados para esta contratación</p>
+                </div>
+            </div>
+            
+            <div style="margin-top: 2rem;">
+                <a th:href="@{/pagos}" class="btn btn-secondary">Volver a Pagos</a>
+                <a th:href="@{/pagos/reconciliar-todos}" class="btn btn-primary">Ver Todas las Reconciliaciones</a>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
+

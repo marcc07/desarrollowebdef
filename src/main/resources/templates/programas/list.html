@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" th:replace="~{layout :: layout(~{::content})}">
+<head>
+    <title>Programas de Entrenamiento</title>
+</head>
+<body>
+    <div th:fragment="content">
+        <div class="card">
+            <h2>Gestión de Programas de Entrenamiento</h2>
+            
+            <div class="search-bar">
+                <form th:action="@{/programas}" method="get" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 10px; margin-bottom: 1rem;">
+                    <input type="text" name="busqueda" th:value="${busqueda}" placeholder="Buscar por nombre, instructor..." class="form-control">
+                    <input type="text" name="instructor" th:value="${instructor}" placeholder="Instructor" class="form-control">
+                    <input type="date" name="fechaInicio" th:value="${fechaInicio}" placeholder="Fecha inicio" class="form-control">
+                    <input type="date" name="fechaFin" th:value="${fechaFin}" placeholder="Fecha fin" class="form-control">
+                    <input type="number" name="costoMin" th:value="${costoMin}" placeholder="Costo mínimo" class="form-control" step="0.01" min="0">
+                    <input type="number" name="costoMax" th:value="${costoMax}" placeholder="Costo máximo" class="form-control" step="0.01" min="0">
+                    <button type="submit" class="btn btn-primary">Buscar</button>
+                    <a th:href="@{/programas}" class="btn btn-secondary">Limpiar</a>
+                </form>
+            </div>
+            
+            <div style="margin-bottom: 1rem;">
+                <a th:href="@{/programas/nuevo}" class="btn btn-success">Nuevo Programa</a>
+            </div>
+            
+            <div class="table-container">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Nombre</th>
+                            <th>Instructor</th>
+                            <th>Costo</th>
+                            <th>Duración (días)</th>
+                            <th>Cupo Disponible</th>
+                            <th>Fecha Inicio</th>
+                            <th>Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr th:each="programa : ${programas}">
+                            <td th:text="${programa.id}"></td>
+                            <td th:text="${programa.nombre}"></td>
+                            <td th:text="${programa.instructor}"></td>
+                            <td th:text="${programa.costo != null ? #numbers.formatDecimal(programa.costo, 1, 2) : 'N/A'}"></td>
+                            <td th:text="${programa.duracionDias}"></td>
+                            <td th:text="${programa.cupoDisponible}"></td>
+                            <td th:text="${programa.fechaInicio}"></td>
+                            <td>
+                                <a th:href="@{/programas/detalle/{id}(id=${programa.id})}" class="btn btn-info">Ver</a>
+                                <a th:href="@{/programas/editar/{id}(id=${programa.id})}" class="btn btn-warning">Editar</a>
+                                <a th:href="@{/programas/eliminar/{id}(id=${programa.id})}" class="btn btn-danger" 
+                                   onclick="return confirm('¿Está seguro de eliminar este programa?')">Eliminar</a>
+                            </td>
+                        </tr>
+                        <tr th:if="${#lists.isEmpty(programas)}">
+                            <td colspan="8" style="text-align: center;">No hay programas registrados</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
+

@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" th:replace="~{layout :: layout(~{::content})}">
+<head>
+    <title>Detalle de la Reserva</title>
+</head>
+<body>
+    <div th:fragment="content">
+        <div class="card">
+            <h2>Detalle de la Reserva</h2>
+            
+            <div style="margin-bottom: 1rem;">
+                <a th:href="@{/reservas/editar/{id}(id=${reserva.id})}" class="btn btn-warning">Editar</a>
+                <a th:if="${reserva.estado != 'CANCELADA'}" th:href="@{/reservas/cancelar/{id}(id=${reserva.id})}" class="btn btn-danger" 
+                   onclick="return confirm('¿Está seguro de cancelar esta reserva? Se liberará el cupo del programa.')">Cancelar</a>
+                <a th:href="@{/reservas}" class="btn btn-secondary">Volver</a>
+            </div>
+            
+            <table>
+                <tr>
+                    <th>ID</th>
+                    <td th:text="${reserva.id}"></td>
+                </tr>
+                <tr>
+                    <th>Cliente</th>
+                    <td>
+                        <a th:href="@{/clientes/detalle/{id}(id=${reserva.cliente.id})}" th:text="${reserva.cliente.nombre}"></a>
+                    </td>
+                </tr>
+                <tr>
+                    <th>Programa de Entrenamiento</th>
+                    <td>
+                        <a th:href="@{/programas/detalle/{id}(id=${reserva.programaEntrenamiento.id})}" th:text="${reserva.programaEntrenamiento.nombre}"></a>
+                    </td>
+                </tr>
+                <tr>
+                    <th>Fecha de Reserva</th>
+                    <td th:text="${reserva.fechaReserva}"></td>
+                </tr>
+                <tr>
+                    <th>Estado</th>
+                    <td>
+                        <span th:if="${reserva.estado == 'CONFIRMADA'}" class="badge badge-success" th:text="${reserva.estado}"></span>
+                        <span th:if="${reserva.estado == 'PENDIENTE'}" class="badge badge-warning" th:text="${reserva.estado}"></span>
+                        <span th:if="${reserva.estado == 'COMPLETADA'}" class="badge badge-info" th:text="${reserva.estado}"></span>
+                        <span th:if="${reserva.estado == 'CANCELADA'}" class="badge badge-danger" th:text="${reserva.estado}"></span>
+                        <span th:if="${reserva.estado != 'CONFIRMADA' && reserva.estado != 'PENDIENTE' && reserva.estado != 'COMPLETADA' && reserva.estado != 'CANCELADA'}" th:text="${reserva.estado}"></span>
+                    </td>
+                </tr>
+                <tr>
+                    <th>Confirmación Enviada</th>
+                    <td th:text="${reserva.confirmacionEnviada ? 'Sí' : 'No'}"></td>
+                </tr>
+                <tr>
+                    <th>Observaciones</th>
+                    <td th:text="${reserva.observaciones != null ? reserva.observaciones : 'N/A'}"></td>
+                </tr>
+            </table>
+            
+            <h3 style="margin-top: 2rem;">Información del Programa</h3>
+            <table>
+                <tr>
+                    <th>Nombre del Programa</th>
+                    <td th:text="${reserva.programaEntrenamiento.nombre}"></td>
+                </tr>
+                <tr>
+                    <th>Instructor</th>
+                    <td th:text="${reserva.programaEntrenamiento.instructor != null ? reserva.programaEntrenamiento.instructor : 'N/A'}"></td>
+                </tr>
+                <tr>
+                    <th>Costo</th>
+                    <td th:text="${reserva.programaEntrenamiento.costo != null ? #numbers.formatDecimal(reserva.programaEntrenamiento.costo, 1, 2) : 'N/A'}"></td>
+                </tr>
+                <tr>
+                    <th>Duración</th>
+                    <td th:text="${reserva.programaEntrenamiento.duracionDias != null ? reserva.programaEntrenamiento.duracionDias + ' días' : 'N/A'}"></td>
+                </tr>
+                <tr>
+                    <th>Fecha de Inicio</th>
+                    <td th:text="${reserva.programaEntrenamiento.fechaInicio != null ? reserva.programaEntrenamiento.fechaInicio : 'Por confirmar'}"></td>
+                </tr>
+                <tr>
+                    <th>Fecha de Fin</th>
+                    <td th:text="${reserva.programaEntrenamiento.fechaFin != null ? reserva.programaEntrenamiento.fechaFin : 'Por confirmar'}"></td>
+                </tr>
+                <tr>
+                    <th>Cupo Disponible</th>
+                    <td th:text="${reserva.programaEntrenamiento.cupoDisponible != null ? reserva.programaEntrenamiento.cupoDisponible : 'N/A'}"></td>
+                </tr>
+            </table>
+            
+            <h3 style="margin-top: 2rem;">Información del Cliente</h3>
+            <table>
+                <tr>
+                    <th>Nombre</th>
+                    <td th:text="${reserva.cliente.nombre}"></td>
+                </tr>
+                <tr>
+                    <th>Email</th>
+                    <td th:text="${reserva.cliente.email != null ? reserva.cliente.email : 'N/A'}"></td>
+                </tr>
+                <tr>
+                    <th>Teléfono</th>
+                    <td th:text="${reserva.cliente.telefono != null ? reserva.cliente.telefono : 'N/A'}"></td>
+                </tr>
+                <tr>
+                    <th>Tipo de Cliente</th>
+                    <td th:text="${reserva.cliente.tipoCliente != null ? reserva.cliente.tipoCliente : 'N/A'}"></td>
+                </tr>
+            </table>
+        </div>
+    </div>
+</body>
+</html>
+

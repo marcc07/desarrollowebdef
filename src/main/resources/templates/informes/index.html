@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" th:replace="~{layout :: layout(~{::content})}">
+<head>
+    <title>Informes y Estadísticas</title>
+</head>
+<body>
+    <div th:fragment="content">
+        <div class="card">
+            <h2>Informes y Estadísticas</h2>
+            
+            <div style="margin-bottom: 2rem; display: flex; gap: 1rem; flex-wrap: wrap;">
+                <a th:href="@{/informes/ingresos}" class="btn btn-primary">Informe de Ingresos</a>
+                <a th:href="@{/informes/frecuencia}" class="btn btn-primary">Frecuencia de Contrataciones</a>
+                <a th:href="@{/pagos/reconciliar-todos}" class="btn btn-info">Reconciliación de Pagos</a>
+            </div>
+            
+            <div class="stats-grid" style="margin-bottom: 2rem;">
+                <div class="stat-card">
+                    <h3>Ingresos Totales</h3>
+                    <div class="value" th:text="${estadisticas.ingresosTotales != null ? #numbers.formatDecimal(estadisticas.ingresosTotales, 1, 2) : '0.00'}">0.00</div>
+                </div>
+                <div class="stat-card">
+                    <h3>Contrataciones Este Mes</h3>
+                    <div class="value" th:text="${estadisticas.contratacionesEsteMes}">0</div>
+                </div>
+                <div class="stat-card">
+                    <h3>Reservas Este Mes</h3>
+                    <div class="value" th:text="${estadisticas.reservasEsteMes}">0</div>
+                </div>
+            </div>
+            
+            <h3>Estadísticas Generales</h3>
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <h3>Total Servicios</h3>
+                    <div class="value" th:text="${estadisticas.totalServicios}">0</div>
+                </div>
+                <div class="stat-card">
+                    <h3>Total Programas</h3>
+                    <div class="value" th:text="${estadisticas.totalProgramas}">0</div>
+                </div>
+                <div class="stat-card">
+                    <h3>Total Contrataciones</h3>
+                    <div class="value" th:text="${estadisticas.totalContrataciones}">0</div>
+                </div>
+                <div class="stat-card">
+                    <h3>Total Reservas</h3>
+                    <div class="value" th:text="${estadisticas.totalReservas}">0</div>
+                </div>
+            </div>
+            
+            <h3 style="margin-top: 2rem;">Servicios Más Solicitados</h3>
+            <div class="table-container">
+                <table th:if="${servicios.serviciosMasSolicitados != null and !servicios.serviciosMasSolicitados.isEmpty()}">
+                    <thead>
+                        <tr>
+                            <th>Servicio</th>
+                            <th>Número de Contrataciones</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr th:each="entry : ${servicios.serviciosMasSolicitados}">
+                            <td th:text="${entry.key}"></td>
+                            <td th:text="${entry.value}"></td>
+                        </tr>
+                    </tbody>
+                </table>
+                <p th:if="${servicios.serviciosMasSolicitados == null or servicios.serviciosMasSolicitados.isEmpty()}">No hay datos disponibles</p>
+            </div>
+            
+            <h3 style="margin-top: 2rem;">Cursos con Mayor Inscripción</h3>
+            <div class="table-container">
+                <table th:if="${cursos.cursosMasInscritos != null and !cursos.cursosMasInscritos.isEmpty()}">
+                    <thead>
+                        <tr>
+                            <th>Curso</th>
+                            <th>Número de Inscripciones</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr th:each="entry : ${cursos.cursosMasInscritos}">
+                            <td th:text="${entry.key}"></td>
+                            <td th:text="${entry.value}"></td>
+                        </tr>
+                    </tbody>
+                </table>
+                <p th:if="${cursos.cursosMasInscritos == null or cursos.cursosMasInscritos.isEmpty()}">No hay datos disponibles</p>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
+

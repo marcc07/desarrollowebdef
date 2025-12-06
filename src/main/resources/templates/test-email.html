@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      th:replace="~{layout :: layout(~{::content})}">
+<head>
+    <title>Test de Email</title>
+</head>
+<body>
+    <div th:fragment="content">
+        <div class="container">
+            <h2>Test de Envío de Email</h2>
+            
+            <div th:if="${message}" class="alert alert-success" th:text="${message}"></div>
+            <div th:if="${error}" class="alert alert-error" th:text="${error}"></div>
+            
+            <div class="info-box" style="background-color: #e3f2fd; padding: 15px; border-radius: 5px; margin-bottom: 20px;">
+                <h3>Información de Configuración</h3>
+                <p><strong>Email desde el que se envía:</strong> <span th:text="${fromEmail}"></span></p>
+                <p><strong>Servidor SMTP:</strong> smtp.gmail.com</p>
+                <p><strong>Puerto:</strong> 587</p>
+            </div>
+            
+            <form th:action="@{/test-email/enviar}" method="post" class="form">
+                <div class="form-group">
+                    <label for="para">Email destino:</label>
+                    <input type="email" id="para" name="para" class="form-control" 
+                           placeholder="rago010222004@gmail.com" required>
+                    <small class="form-text">Ingresa el email al que quieres enviar la prueba</small>
+                </div>
+                
+                <div class="form-group">
+                    <label for="asunto">Asunto (opcional):</label>
+                    <input type="text" id="asunto" name="asunto" class="form-control" 
+                           placeholder="Email de Prueba - Sistema de Seguridad">
+                </div>
+                
+                <div class="form-group">
+                    <label for="mensaje">Mensaje (opcional):</label>
+                    <textarea id="mensaje" name="mensaje" class="form-control" rows="5" 
+                              placeholder="Este es un email de prueba desde el Sistema de Seguridad y Entrenamiento."></textarea>
+                </div>
+                
+                <div class="form-actions">
+                    <button type="submit" class="btn btn-primary">Enviar Email de Prueba</button>
+                    <a th:href="@{/dashboard}" class="btn btn-secondary">Volver al Dashboard</a>
+                </div>
+            </form>
+            
+            <div class="warning-box" style="background-color: #fff3cd; padding: 15px; border-radius: 5px; margin-top: 20px;">
+                <h4>⚠️ Notas Importantes:</h4>
+                <ul>
+                    <li>Verifica que el correo <strong>rago010222004@gmail.com</strong> tenga habilitada la verificación en dos pasos</li>
+                    <li>La contraseña de aplicación debe estar correctamente configurada en <code>application.properties</code></li>
+                    <li>Si no recibes el email, revisa la carpeta de <strong>Spam/Correo no deseado</strong></li>
+                    <li>Revisa los logs de la aplicación para ver errores detallados</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
+
+
+
+
+
+
+
+

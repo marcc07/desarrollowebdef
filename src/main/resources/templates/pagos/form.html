@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" th:replace="~{layout :: layout(~{::content})}">
+<head>
+    <title th:text="${pago.id != null ? 'Editar Pago' : 'Nuevo Pago'}">Pago</title>
+</head>
+<body>
+    <div th:fragment="content">
+        <div class="card">
+            <h2 th:text="${pago.id != null ? 'Editar Pago' : 'Nuevo Pago'}">Pago</h2>
+            
+            <form th:action="@{/pagos/guardar}" th:object="${pago}" method="post">
+                <input type="hidden" th:field="*{id}">
+                
+                <div class="form-group">
+                    <label for="cliente">Cliente:</label>
+                    <select id="cliente" th:field="*{cliente.id}" class="form-control" required>
+                        <option value="">Seleccione un cliente...</option>
+                        <option th:each="cliente : ${clientes}" th:value="${cliente.id}" th:text="${cliente.nombre}"></option>
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label for="contratacion">Contratación (Opcional):</label>
+                    <select id="contratacion" th:field="*{contratacion.id}" class="form-control">
+                        <option value="">Ninguna</option>
+                        <option th:each="contratacion : ${contrataciones}" th:value="${contratacion.id}" 
+                                th:text="${contratacion.cliente.nombre + ' - ' + contratacion.servicioSeguridad.nombre}"></option>
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label for="monto">Monto:</label>
+                    <input type="number" id="monto" th:field="*{monto}" class="form-control" step="0.01" min="0.01" required>
+                    <span th:if="${#fields.hasErrors('monto')}" th:errors="*{monto}" class="error"></span>
+                </div>
+                
+                <div class="form-group">
+                    <label for="fechaPago">Fecha de Pago:</label>
+                    <input type="date" id="fechaPago" th:field="*{fechaPago}" class="form-control">
+                </div>
+                
+                <div class="form-group">
+                    <label for="medioPago">Medio de Pago:</label>
+                    <select id="medioPago" th:field="*{medioPago}" class="form-control">
+                        <option value="">Seleccione...</option>
+                        <option value="EFECTIVO">Efectivo</option>
+                        <option value="TARJETA">Tarjeta</option>
+                        <option value="TRANSFERENCIA">Transferencia</option>
+                        <option value="CHEQUE">Cheque</option>
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label for="estado">Estado:</label>
+                    <select id="estado" th:field="*{estado}" class="form-control" required>
+                        <option value="PENDIENTE">Pendiente</option>
+                        <option value="COMPLETADO">Completado</option>
+                        <option value="CANCELADO">Cancelado</option>
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label for="numeroReferencia">Número de Referencia:</label>
+                    <input type="text" id="numeroReferencia" th:field="*{numeroReferencia}" class="form-control">
+                </div>
+                
+                <div class="form-group">
+                    <label for="observaciones">Observaciones:</label>
+                    <textarea id="observaciones" th:field="*{observaciones}" class="form-control" rows="3"></textarea>
+                </div>
+                
+                <button type="submit" class="btn btn-success">Guardar</button>
+                <a th:href="@{/pagos}" class="btn btn-secondary">Cancelar</a>
+            </form>
+        </div>
+    </div>
+</body>
+</html>
+

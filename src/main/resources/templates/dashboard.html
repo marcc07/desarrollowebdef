@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" th:replace="~{layout :: layout(~{::content})}">
+<head>
+    <title>Dashboard</title>
+</head>
+<body>
+    <div th:fragment="content">
+        <div class="card">
+            <h2><i class="fas fa-chart-line"></i> Dashboard - Sistema de Seguridad y Entrenamiento</h2>
+            
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-icon"><i class="fas fa-users"></i></div>
+                    <h3>Clientes</h3>
+                    <div class="value" th:text="${totalClientes}">0</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon"><i class="fas fa-shield-alt"></i></div>
+                    <h3>Servicios</h3>
+                    <div class="value" th:text="${totalServicios}">0</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon"><i class="fas fa-graduation-cap"></i></div>
+                    <h3>Programas</h3>
+                    <div class="value" th:text="${totalProgramas}">0</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon"><i class="fas fa-file-contract"></i></div>
+                    <h3>Contrataciones</h3>
+                    <div class="value" th:text="${totalContrataciones}">0</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon"><i class="fas fa-calendar-check"></i></div>
+                    <h3>Reservas</h3>
+                    <div class="value" th:text="${totalReservas}">0</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon"><i class="fas fa-credit-card"></i></div>
+                    <h3>Pagos</h3>
+                    <div class="value" th:text="${totalPagos}">0</div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="card">
+            <h2><i class="fas fa-bolt"></i> Accesos Rápidos</h2>
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 1rem;">
+                <a th:href="@{/clientes/nuevo}" class="btn btn-primary"><i class="fas fa-user-plus"></i> Nuevo Cliente</a>
+                <a th:href="@{/servicios/nuevo}" class="btn btn-primary"><i class="fas fa-plus-circle"></i> Nuevo Servicio</a>
+                <a th:href="@{/programas/nuevo}" class="btn btn-primary"><i class="fas fa-plus-circle"></i> Nuevo Programa</a>
+                <a th:href="@{/contrataciones/nuevo}" class="btn btn-primary"><i class="fas fa-file-contract"></i> Nueva Contratación</a>
+                <a th:href="@{/reservas/nuevo}" class="btn btn-primary"><i class="fas fa-calendar-plus"></i> Nueva Reserva</a>
+                <a th:href="@{/pagos/nuevo}" class="btn btn-primary"><i class="fas fa-money-bill-wave"></i> Nuevo Pago</a>
+            </div>
+        </div>
+        
+        <div class="card" th:if="${estadisticas != null}">
+            <h2><i class="fas fa-chart-bar"></i> Resumen de Actividad</h2>
+            <div class="stats-grid">
+                <div class="stat-card" th:if="${estadisticas.ingresosTotales != null}">
+                    <div class="stat-icon"><i class="fas fa-dollar-sign"></i></div>
+                    <h3>Ingresos Totales</h3>
+                    <div class="value" th:text="'$' + ${#numbers.formatDecimal(estadisticas.ingresosTotales, 1, 2)}">$0.00</div>
+                </div>
+                <div class="stat-card" th:if="${estadisticas.contratacionesEsteMes != null}">
+                    <div class="stat-icon"><i class="fas fa-file-contract"></i></div>
+                    <h3>Contrataciones Este Mes</h3>
+                    <div class="value" th:text="${estadisticas.contratacionesEsteMes}">0</div>
+                </div>
+                <div class="stat-card" th:if="${estadisticas.reservasEsteMes != null}">
+                    <div class="stat-icon"><i class="fas fa-calendar-check"></i></div>
+                    <h3>Reservas Este Mes</h3>
+                    <div class="value" th:text="${estadisticas.reservasEsteMes}">0</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

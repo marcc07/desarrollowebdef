@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" th:replace="~{layout :: layout(~{::content})}">
+<head>
+    <title>Frecuencia de Contrataciones</title>
+</head>
+<body>
+    <div th:fragment="content">
+        <div class="card">
+            <h2>Frecuencia de Contrataciones</h2>
+            
+            <form th:action="@{/informes/frecuencia}" method="get" style="margin-bottom: 2rem;">
+                <div class="search-bar">
+                    <label for="inicio">Fecha Inicio:</label>
+                    <input type="date" id="inicio" name="inicio" th:value="${inicio}" class="form-control">
+                    
+                    <label for="fin">Fecha Fin:</label>
+                    <input type="date" id="fin" name="fin" th:value="${fin}" class="form-control">
+                    
+                    <button type="submit" class="btn btn-primary">Consultar</button>
+                </div>
+            </form>
+            
+            <div class="stat-card" style="max-width: 300px; margin-bottom: 2rem;">
+                <h3>Total de Contrataciones</h3>
+                <div class="value" th:text="${informe.totalContrataciones}">0</div>
+            </div>
+            
+            <h3>Contrataciones por Estado</h3>
+            <div class="table-container">
+                <table th:if="${informe.contratacionesPorEstado != null and !informe.contratacionesPorEstado.isEmpty()}">
+                    <thead>
+                        <tr>
+                            <th>Estado</th>
+                            <th>Cantidad</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr th:each="entry : ${informe.contratacionesPorEstado}">
+                            <td th:text="${entry.key}"></td>
+                            <td th:text="${entry.value}"></td>
+                        </tr>
+                    </tbody>
+                </table>
+                <p th:if="${informe.contratacionesPorEstado == null or informe.contratacionesPorEstado.isEmpty()}">No hay datos disponibles</p>
+            </div>
+            
+            <h3 style="margin-top: 2rem;">Frecuencia Mensual</h3>
+            <div class="table-container">
+                <table th:if="${informe.frecuenciaPorMes != null and !informe.frecuenciaPorMes.isEmpty()}">
+                    <thead>
+                        <tr>
+                            <th>Mes</th>
+                            <th>Cantidad de Contrataciones</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr th:each="entry : ${informe.frecuenciaPorMes}">
+                            <td th:text="${entry.key}"></td>
+                            <td th:text="${entry.value}"></td>
+                        </tr>
+                    </tbody>
+                </table>
+                <p th:if="${informe.frecuenciaPorMes == null or informe.frecuenciaPorMes.isEmpty()}">No hay datos disponibles</p>
+            </div>
+            
+            <div style="margin-top: 2rem;">
+                <a th:href="@{/informes}" class="btn btn-secondary">Volver a Informes</a>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
+

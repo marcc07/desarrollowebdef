@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" th:replace="~{layout :: layout(~{::content})}">
+<head>
+    <title>Detalle del Cliente</title>
+</head>
+<body>
+    <div th:fragment="content">
+        <div class="card">
+            <h2><i class="fas fa-user"></i> Detalle del Cliente</h2>
+            
+            <div style="margin-bottom: 1rem;">
+                <a th:href="@{/clientes/editar/{id}(id=${cliente.id})}" class="btn btn-warning"><i class="fas fa-edit"></i> Editar</a>
+                <a th:href="@{/clientes}" class="btn btn-secondary"><i class="fas fa-arrow-left"></i> Volver</a>
+            </div>
+            
+            <table>
+                <tr>
+                    <th>ID</th>
+                    <td th:text="${cliente.id}"></td>
+                </tr>
+                <tr>
+                    <th>Nombre</th>
+                    <td th:text="${cliente.nombre}"></td>
+                </tr>
+                <tr>
+                    <th>Tipo de Cliente</th>
+                    <td th:text="${cliente.tipoCliente}"></td>
+                </tr>
+                <tr>
+                    <th>Documento de Identidad</th>
+                    <td th:text="${cliente.documentoIdentidad}"></td>
+                </tr>
+                <tr>
+                    <th>Email</th>
+                    <td th:text="${cliente.email}"></td>
+                </tr>
+                <tr>
+                    <th>Teléfono</th>
+                    <td th:text="${cliente.telefono}"></td>
+                </tr>
+                <tr>
+                    <th>Dirección</th>
+                    <td th:text="${cliente.direccion}"></td>
+                </tr>
+                <tr>
+                    <th>Ciudad</th>
+                    <td th:text="${cliente.ciudad}"></td>
+                </tr>
+                <tr>
+                    <th>País</th>
+                    <td th:text="${cliente.pais}"></td>
+                </tr>
+                <tr>
+                    <th>Fecha de Registro</th>
+                    <td th:text="${cliente.fechaRegistro}"></td>
+                </tr>
+                <tr>
+                    <th>Notas</th>
+                    <td th:text="${cliente.notas}"></td>
+                </tr>
+            </table>
+            
+            <h3 style="margin-top: 2rem;"><i class="fas fa-file-contract"></i> Historial de Contrataciones</h3>
+            <div class="table-container" th:if="${contrataciones != null}">
+                <table th:if="${!#lists.isEmpty(contrataciones)}">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Servicio</th>
+                            <th>Fecha Contratación</th>
+                            <th>Fecha Inicio</th>
+                            <th>Fecha Fin</th>
+                            <th>Estado</th>
+                            <th>Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr th:each="contratacion : ${contrataciones}">
+                            <td th:text="${contratacion.id}"></td>
+                            <td>
+                                <a th:href="@{/contrataciones/detalle/{id}(id=${contratacion.id})}" th:text="${contratacion.servicioSeguridad != null ? contratacion.servicioSeguridad.nombre : 'N/A'}"></a>
+                            </td>
+                            <td th:text="${contratacion.fechaContratacion}"></td>
+                            <td th:text="${contratacion.fechaInicio}"></td>
+                            <td th:text="${contratacion.fechaFin}"></td>
+                            <td>
+                                <span th:if="${contratacion.estado == 'ACTIVA' || contratacion.estado == 'CONFIRMADA'}" class="badge badge-success" th:text="${contratacion.estado}"></span>
+                                <span th:if="${contratacion.estado == 'PENDIENTE'}" class="badge badge-warning" th:text="${contratacion.estado}"></span>
+                                <span th:if="${contratacion.estado == 'FINALIZADA'}" class="badge badge-info" th:text="${contratacion.estado}"></span>
+                                <span th:if="${contratacion.estado == 'CANCELADA'}" class="badge badge-danger" th:text="${contratacion.estado}"></span>
+                            </td>
+                            <td>
+                                <a th:href="@{/contrataciones/detalle/{id}(id=${contratacion.id})}" class="btn btn-sm btn-info"><i class="fas fa-eye"></i> Ver</a>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+                <p th:if="${#lists.isEmpty(contrataciones)}" style="color: #7f8c8d; padding: 1rem;">No hay contrataciones registradas para este cliente.</p>
+                <div style="margin-top: 1rem;" th:if="${!#lists.isEmpty(contrataciones)}">
+                    <a th:href="@{/contrataciones/nuevo}" class="btn btn-primary"><i class="fas fa-plus"></i> Nueva Contratación</a>
+                </div>
+            </div>
+            
+            <h3 style="margin-top: 2rem;"><i class="fas fa-calendar-check"></i> Historial de Reservas</h3>
+            <div class="table-container" th:if="${reservas != null}">
+                <table th:if="${!#lists.isEmpty(reservas)}">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Programa</th>
+                            <th>Fecha Reserva</th>
+                            <th>Estado</th>
+                            <th>Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr th:each="reserva : ${reservas}">
+                            <td th:text="${reserva.id}"></td>
+                            <td>
+                                <a th:href="@{/reservas/detalle/{id}(id=${reserva.id})}" th:text="${reserva.programaEntrenamiento != null ? reserva.programaEntrenamiento.nombre : 'N/A'}"></a>
+                            </td>
+                            <td th:text="${reserva.fechaReserva}"></td>
+                            <td>
+                                <span th:if="${reserva.estado == 'CONFIRMADA' || reserva.estado == 'ACTIVA'}" class="badge badge-success" th:text="${reserva.estado}"></span>
+                                <span th:if="${reserva.estado == 'PENDIENTE'}" class="badge badge-warning" th:text="${reserva.estado}"></span>
+                                <span th:if="${reserva.estado == 'CANCELADA'}" class="badge badge-danger" th:text="${reserva.estado}"></span>
+                                <span th:if="${reserva.estado == 'COMPLETADA'}" class="badge badge-info" th:text="${reserva.estado}"></span>
+                            </td>
+                            <td>
+                                <a th:href="@{/reservas/detalle/{id}(id=${reserva.id})}" class="btn btn-sm btn-info"><i class="fas fa-eye"></i> Ver</a>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+                <p th:if="${#lists.isEmpty(reservas)}" style="color: #7f8c8d; padding: 1rem;">No hay reservas registradas para este cliente.</p>
+                <div style="margin-top: 1rem;" th:if="${!#lists.isEmpty(reservas)}">
+                    <a th:href="@{/reservas/nuevo}" class="btn btn-primary"><i class="fas fa-plus"></i> Nueva Reserva</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
+

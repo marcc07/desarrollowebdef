@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" th:replace="~{layout :: layout(~{::content})}">
+<head>
+    <title>Detalle del Programa</title>
+</head>
+<body>
+    <div th:fragment="content">
+        <div class="card">
+            <h2>Detalle del Programa</h2>
+            
+            <div style="margin-bottom: 1rem;">
+                <a th:href="@{/programas/editar/{id}(id=${programa.id})}" class="btn btn-warning">Editar</a>
+                <a th:href="@{/programas}" class="btn btn-secondary">Volver</a>
+            </div>
+            
+            <table>
+                <tr>
+                    <th>ID</th>
+                    <td th:text="${programa.id}"></td>
+                </tr>
+                <tr>
+                    <th>Nombre</th>
+                    <td th:text="${programa.nombre}"></td>
+                </tr>
+                <tr>
+                    <th>Contenido</th>
+                    <td th:text="${programa.contenido}"></td>
+                </tr>
+                <tr>
+                    <th>Requisitos</th>
+                    <td th:text="${programa.requisitos}"></td>
+                </tr>
+                <tr>
+                    <th>Instructor</th>
+                    <td th:text="${programa.instructor}"></td>
+                </tr>
+                <tr>
+                    <th>Costo</th>
+                    <td th:text="${programa.costo != null ? #numbers.formatDecimal(programa.costo, 1, 2) : 'N/A'}"></td>
+                </tr>
+                <tr>
+                    <th>Duración (días)</th>
+                    <td th:text="${programa.duracionDias}"></td>
+                </tr>
+                <tr>
+                    <th>Cupo</th>
+                    <td th:text="${programa.cupo}"></td>
+                </tr>
+                <tr>
+                    <th>Cupo Disponible</th>
+                    <td th:text="${programa.cupoDisponible}"></td>
+                </tr>
+                <tr>
+                    <th>Fecha Inicio</th>
+                    <td th:text="${programa.fechaInicio}"></td>
+                </tr>
+                <tr>
+                    <th>Fecha Fin</th>
+                    <td th:text="${programa.fechaFin}"></td>
+                </tr>
+                <tr>
+                    <th>Temario</th>
+                    <td th:text="${programa.temario}"></td>
+                </tr>
+                <tr>
+                    <th>Estado</th>
+                    <td th:text="${programa.activo ? 'Activo' : 'Inactivo'}"></td>
+                </tr>
+            </table>
+        </div>
+    </div>
+</body>
+</html>
+

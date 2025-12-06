@@ -1,0 +1,35 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200" width="200" height="200">
+  <!-- Fondo con gradiente -->
+  <defs>
+    <linearGradient id="grad1" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#1e3c72;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#2a5298;stop-opacity:1" />
+    </linearGradient>
+    <linearGradient id="grad2" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#f39c12;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#e67e22;stop-opacity:1" />
+    </linearGradient>
+  </defs>
+  
+  <!-- Círculo de fondo -->
+  <circle cx="100" cy="100" r="95" fill="url(#grad1)" stroke="#fff" stroke-width="3"/>
+  
+  <!-- Escudo de seguridad -->
+  <path d="M 100 30 L 140 50 L 140 90 Q 140 130 100 160 Q 60 130 60 90 L 60 50 Z" 
+        fill="#fff" stroke="#1e3c72" stroke-width="2"/>
+  
+  <!-- Checkmark dentro del escudo -->
+  <path d="M 85 100 L 95 110 L 115 85" 
+        stroke="url(#grad1)" stroke-width="6" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+  
+  <!-- Estrella de entrenamiento -->
+  <path d="M 100 140 L 105 155 L 120 155 L 108 165 L 113 180 L 100 172 L 87 180 L 92 165 L 80 155 L 95 155 Z" 
+        fill="url(#grad2)" stroke="#fff" stroke-width="2"/>
+</svg>
+
+
+
+
+
+
+

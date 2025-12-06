@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" th:replace="~{layout :: layout(~{::content})}">
+<head>
+    <title>Informe de Ingresos</title>
+</head>
+<body>
+    <div th:fragment="content">
+        <div class="card">
+            <h2>Informe de Ingresos</h2>
+            
+            <form th:action="@{/informes/ingresos}" method="get" style="margin-bottom: 2rem;">
+                <div class="search-bar">
+                    <label for="inicio">Fecha Inicio:</label>
+                    <input type="date" id="inicio" name="inicio" th:value="${inicio}" class="form-control">
+                    
+                    <label for="fin">Fecha Fin:</label>
+                    <input type="date" id="fin" name="fin" th:value="${fin}" class="form-control">
+                    
+                    <button type="submit" class="btn btn-primary">Consultar</button>
+                </div>
+            </form>
+            
+            <div class="stat-card" style="max-width: 300px; margin-bottom: 2rem;">
+                <h3>Ingresos Totales</h3>
+                <div class="value" th:text="${informe.ingresosTotales != null ? #numbers.formatDecimal(informe.ingresosTotales, 1, 2) : '0.00'}">0.00</div>
+            </div>
+            
+            <h3>Ingresos por Medio de Pago</h3>
+            <div class="table-container">
+                <table th:if="${informe.ingresosPorMedio != null and !informe.ingresosPorMedio.isEmpty()}">
+                    <thead>
+                        <tr>
+                            <th>Medio de Pago</th>
+                            <th>Monto</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr th:each="entry : ${informe.ingresosPorMedio}">
+                            <td th:text="${entry.key}"></td>
+                            <td th:text="${#numbers.formatDecimal(entry.value, 1, 2)}"></td>
+                        </tr>
+                    </tbody>
+                </table>
+                <p th:if="${informe.ingresosPorMedio == null or informe.ingresosPorMedio.isEmpty()}">No hay datos disponibles para el período seleccionado</p>
+            </div>
+            
+            <h3 style="margin-top: 2rem;">Ingresos por Servicio</h3>
+            <div class="table-container">
+                <table th:if="${informe.ingresosPorServicio != null and !informe.ingresosPorServicio.isEmpty()}">
+                    <thead>
+                        <tr>
+                            <th>Servicio</th>
+                            <th>Monto</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr th:each="entry : ${informe.ingresosPorServicio}">
+                            <td th:text="${entry.key}"></td>
+                            <td th:text="${#numbers.formatDecimal(entry.value, 1, 2)}"></td>
+                        </tr>
+                    </tbody>
+                </table>
+                <p th:if="${informe.ingresosPorServicio == null or informe.ingresosPorServicio.isEmpty()}">No hay ingresos por servicios en el período seleccionado</p>
+            </div>
+            
+            <h3 style="margin-top: 2rem;">Ingresos por Tipo de Cliente</h3>
+            <div class="table-container">
+                <table th:if="${informe.ingresosPorTipoCliente != null and !informe.ingresosPorTipoCliente.isEmpty()}">
+                    <thead>
+                        <tr>
+                            <th>Tipo de Cliente</th>
+                            <th>Monto</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr th:each="entry : ${informe.ingresosPorTipoCliente}">
+                            <td th:text="${entry.key}"></td>
+                            <td th:text="${#numbers.formatDecimal(entry.value, 1, 2)}"></td>
+                        </tr>
+                    </tbody>
+                </table>
+                <p th:if="${informe.ingresosPorTipoCliente == null or informe.ingresosPorTipoCliente.isEmpty()}">No hay ingresos por tipo de cliente en el período seleccionado</p>
+            </div>
+            
+            <div style="margin-top: 2rem;">
+                <a th:href="@{/informes}" class="btn btn-secondary">Volver a Informes</a>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
+

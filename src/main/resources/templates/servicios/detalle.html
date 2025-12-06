@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" th:replace="~{layout :: layout(~{::content})}">
+<head>
+    <title>Detalle del Servicio</title>
+</head>
+<body>
+    <div th:fragment="content">
+        <div class="card">
+            <h2>Detalle del Servicio</h2>
+            
+            <div style="margin-bottom: 1rem;">
+                <a th:href="@{/servicios/editar/{id}(id=${servicio.id})}" class="btn btn-warning">Editar</a>
+                <a th:href="@{/servicios}" class="btn btn-secondary">Volver</a>
+            </div>
+            
+            <table>
+                <tr>
+                    <th>ID</th>
+                    <td th:text="${servicio.id}"></td>
+                </tr>
+                <tr>
+                    <th>Nombre</th>
+                    <td th:text="${servicio.nombre}"></td>
+                </tr>
+                <tr>
+                    <th>Tipo</th>
+                    <td th:text="${servicio.tipo}"></td>
+                </tr>
+                <tr>
+                    <th>Descripción</th>
+                    <td th:text="${servicio.descripcion}"></td>
+                </tr>
+                <tr>
+                    <th>Ubicación</th>
+                    <td th:text="${servicio.ubicacion}"></td>
+                </tr>
+                <tr>
+                    <th>Precio</th>
+                    <td th:text="${servicio.precio != null ? #numbers.formatDecimal(servicio.precio, 1, 2) : 'N/A'}"></td>
+                </tr>
+                <tr>
+                    <th>Duración</th>
+                    <td th:text="${servicio.duracion}"></td>
+                </tr>
+                <tr>
+                    <th>Personal Asignado</th>
+                    <td th:text="${servicio.personalAsignado}"></td>
+                </tr>
+                <tr>
+                    <th>Horarios</th>
+                    <td th:text="${servicio.horarios}"></td>
+                </tr>
+                <tr>
+                    <th>Herramientas</th>
+                    <td th:text="${servicio.herramientas}"></td>
+                </tr>
+                <tr>
+                    <th>Condiciones</th>
+                    <td th:text="${servicio.condiciones}"></td>
+                </tr>
+                <tr>
+                    <th>Estado</th>
+                    <td th:text="${servicio.activo ? 'Activo' : 'Inactivo'}"></td>
+                </tr>
+            </table>
+        </div>
+    </div>
+</body>
+</html>
+

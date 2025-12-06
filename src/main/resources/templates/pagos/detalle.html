@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" th:replace="~{layout :: layout(~{::content})}">
+<head>
+    <title>Detalle del Pago</title>
+</head>
+<body>
+    <div th:fragment="content">
+        <div class="card">
+            <h2>Detalle del Pago</h2>
+            
+            <div style="margin-bottom: 1rem;">
+                <a th:href="@{/pagos/editar/{id}(id=${pago.id})}" class="btn btn-warning">Editar</a>
+                <a th:href="@{/pagos}" class="btn btn-secondary">Volver</a>
+            </div>
+            
+            <table>
+                <tr>
+                    <th>ID</th>
+                    <td th:text="${pago.id}"></td>
+                </tr>
+                <tr>
+                    <th>Cliente</th>
+                    <td>
+                        <a th:href="@{/clientes/detalle/{id}(id=${pago.cliente.id})}" th:text="${pago.cliente.nombre}"></a>
+                    </td>
+                </tr>
+                <tr>
+                    <th>Contratación</th>
+                    <td>
+                        <a th:if="${pago.contratacion != null}" th:href="@{/contrataciones/detalle/{id}(id=${pago.contratacion.id})}" th:text="'Contratación #' + ${pago.contratacion.id}"></a>
+                        <span th:if="${pago.contratacion == null}">N/A</span>
+                    </td>
+                </tr>
+                <tr>
+                    <th>Monto</th>
+                    <td style="font-size: 1.2em; font-weight: bold; color: #28a745;">
+                        $<span th:text="${pago.monto != null ? #numbers.formatDecimal(pago.monto, 1, 2) : '0.00'}"></span>
+                    </td>
+                </tr>
+                <tr>
+                    <th>Fecha de Pago</th>
+                    <td th:text="${pago.fechaPago}"></td>
+                </tr>
+                <tr>
+                    <th>Medio de Pago</th>
+                    <td>
+                        <span th:if="${pago.medioPago == 'EFECTIVO'}" class="badge badge-success" th:text="${pago.medioPago}"></span>
+                        <span th:if="${pago.medioPago == 'TARJETA'}" class="badge badge-primary" th:text="${pago.medioPago}"></span>
+                        <span th:if="${pago.medioPago == 'TRANSFERENCIA'}" class="badge badge-info" th:text="${pago.medioPago}"></span>
+                        <span th:if="${pago.medioPago == 'CHEQUE'}" class="badge badge-warning" th:text="${pago.medioPago}"></span>
+                        <span th:if="${pago.medioPago != 'EFECTIVO' && pago.medioPago != 'TARJETA' && pago.medioPago != 'TRANSFERENCIA' && pago.medioPago != 'CHEQUE'}" th:text="${pago.medioPago != null ? pago.medioPago : 'N/A'}"></span>
+                    </td>
+                </tr>
+                <tr>
+                    <th>Estado</th>
+                    <td>
+                        <span th:if="${pago.estado == 'COMPLETADO'}" class="badge badge-success" th:text="${pago.estado}"></span>
+                        <span th:if="${pago.estado == 'PENDIENTE'}" class="badge badge-warning" th:text="${pago.estado}"></span>
+                        <span th:if="${pago.estado == 'CANCELADO'}" class="badge badge-danger" th:text="${pago.estado}"></span>
+                        <span th:if="${pago.estado != 'COMPLETADO' && pago.estado != 'PENDIENTE' && pago.estado != 'CANCELADO'}" th:text="${pago.estado != null ? pago.estado : 'N/A'}"></span>
+                    </td>
+                </tr>
+                <tr>
+                    <th>Número de Referencia</th>
+                    <td th:text="${pago.numeroReferencia != null ? pago.numeroReferencia : 'N/A'}"></td>
+                </tr>
+                <tr>
+                    <th>Observaciones</th>
+                    <td th:text="${pago.observaciones != null ? pago.observaciones : 'N/A'}"></td>
+                </tr>
+            </table>
+            
+            <div th:if="${pago.contratacion != null}" style="margin-top: 2rem;">
+                <h3>Información de la Contratación</h3>
+                <table>
+                    <tr>
+                        <th>Servicio</th>
+                        <td th:text="${pago.contratacion.servicioSeguridad.nombre}"></td>
+                    </tr>
+                    <tr>
+                        <th>Fecha de Inicio</th>
+                        <td th:text="${pago.contratacion.fechaInicio != null ? pago.contratacion.fechaInicio : 'N/A'}"></td>
+                    </tr>
+                    <tr>
+                        <th>Fecha de Fin</th>
+                        <td th:text="${pago.contratacion.fechaFin != null ? pago.contratacion.fechaFin : 'N/A'}"></td>
+                    </tr>
+                    <tr>
+                        <th>Estado</th>
+                        <td th:text="${pago.contratacion.estado}"></td>
+                    </tr>
+                </table>
+                <div style="margin-top: 1rem;">
+                    <a th:href="@{/contrataciones/detalle/{id}(id=${pago.contratacion.id})}" class="btn btn-info">Ver Contratación Completa</a>
+                </div>
+            </div>
+            
+            <div style="margin-top: 2rem;">
+                <h3>Información del Cliente</h3>
+                <table>
+                    <tr>
+                        <th>Nombre</th>
+                        <td th:text="${pago.cliente.nombre}"></td>
+                    </tr>
+                    <tr>
+                        <th>Email</th>
+                        <td th:text="${pago.cliente.email != null ? pago.cliente.email : 'N/A'}"></td>
+                    </tr>
+                    <tr>
+                        <th>Teléfono</th>
+                        <td th:text="${pago.cliente.telefono != null ? pago.cliente.telefono : 'N/A'}"></td>
+                    </tr>
+                    <tr>
+                        <th>Tipo de Cliente</th>
+                        <td th:text="${pago.cliente.tipoCliente != null ? pago.cliente.tipoCliente : 'N/A'}"></td>
+                    </tr>
+                </table>
+                <div style="margin-top: 1rem;">
+                    <a th:href="@{/clientes/detalle/{id}(id=${pago.cliente.id})}" class="btn btn-info">Ver Cliente Completo</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
+
