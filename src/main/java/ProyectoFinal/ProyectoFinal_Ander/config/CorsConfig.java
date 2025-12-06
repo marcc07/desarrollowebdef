@@ -17,13 +17,14 @@ public class CorsConfig implements WebMvcConfigurer {
     @Override
     public void addCorsMappings(@NonNull CorsRegistry registry) {
         registry.addMapping("/api/**")
-                .allowedOrigins(
+                .allowedOriginPatterns(
                     "http://localhost:3000",
                     "http://localhost:5173",
                     "http://localhost:5174",
                     "http://127.0.0.1:5173",
                     "http://127.0.0.1:3000",
                     "https://desarrollowebor.vercel.app",
+                    "https://*.vercel.app",
                     "https://*.railway.app",
                     "https://desarrolloweb-production.up.railway.app"
                 )
@@ -36,7 +37,7 @@ public class CorsConfig implements WebMvcConfigurer {
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
-        configuration.setAllowedOrigins(Arrays.asList(
+        configuration.setAllowedOriginPatterns(Arrays.asList(
             "http://localhost:3000",
             "http://localhost:5173",
             "http://localhost:5174",
