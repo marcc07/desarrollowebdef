@@ -52,7 +52,7 @@ Write-Host "   → ¿Dice ✓ Success?" -ForegroundColor Gray
 Write-Host ""
 Write-Host "2. Obtén la URL de Railway:" -ForegroundColor Yellow
 Write-Host "   → Settings → Domain → copia la URL" -ForegroundColor Gray
-Write-Host "   → Ejemplo: https://proyectofinal-production.up.railway.app" -ForegroundColor Gray
+Write-Host "   → Ejemplo: https://desarrolloweb-production.up.railway.app" -ForegroundColor Gray
 Write-Host ""
 Write-Host "3. Ve a https://vercel.com/dashboard" -ForegroundColor Yellow
 Write-Host "   → Tu proyecto → Settings → Environment Variables" -ForegroundColor Gray
