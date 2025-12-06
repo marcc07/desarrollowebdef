@@ -73,7 +73,7 @@ const Layout = ({ children }) => {
           <ul>
             <li>
               <Link to="/" className={isActive('/') ? 'active' : ''}>
-                <i className="fas fa-chart-line"></i> <span>Dashboard</span>
+                <i className="fas fa-chart-line"></i> <span>Inicio</span>
               </Link>
             </li>
             <li>
